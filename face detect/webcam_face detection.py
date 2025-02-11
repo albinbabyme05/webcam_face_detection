@@ -12,7 +12,9 @@ cam.set(3, 640)  # Width
 cam.set(4, 480)  # Height
 cam.set(10, 100) # Brightness
 
+img_counter = 0
 start_time = 0
+
 while True:
     ret, frame = cam.read()
     faces = face_cascade.detectMultiScale(frame, 1.1, 4)
@@ -30,9 +32,16 @@ while True:
 
     cv2.imshow("Video", frame)
 
-    if cv2.waitKey(10) % 256 == 27:  # Escape key to exit
+    key = cv2.waitKey(10) % 256
+
+    if key == 27:  # Escape key to exit
         print('Escape pressed. Closing the application')
         break
+    elif key == 32:  # Space key to save frame
+        img_location = f"C:/Users/user/Pictures/Camera Roll/opencv_frame_{img_counter}.png"
+        cv2.imwrite(img_location, frame)
+        print(f"{img_location} saved")
+        img_counter += 1
 
 cam.release()
 cv2.destroyAllWindows()
